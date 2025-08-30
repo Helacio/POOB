@@ -1,4 +1,4 @@
-
+import java.util.Random;
 /**
  * A cell that can move and draw
  *
@@ -38,12 +38,30 @@ public class Cell extends Rectangle
         return isPerforated;
     }
     
+    public void switchHole() {
+        this.hole = new Circle();
+        this.hole.changeColor("white");
+        this.isPerforated = true;
+        
+        if (this.hole != null) {
+            this.hole.moveTo(rect.getxCoordinate()+3,
+                rect.getyCoordinate()+3);
+        }
+    }
+    
     /**
      * Put a marbel in a cell
      */
     public void in(String marbel){
         this.marbel = new Circle();
         this.marbel.changeColor(marbel);
+        
+        if (this.marbel != null) {
+        this.marbel.moveTo(
+            rect.getxCoordinate() + 3,
+            rect.getyCoordinate() + 3
+                );
+            }
         withMarbel = true;
     }
     
@@ -85,14 +103,15 @@ public class Cell extends Rectangle
         rect.moveHorizontal(xDistance);
         rect.moveVertical(yDistance);
         
-        //Mueve el agujero y lo centra si es que existe
-        if (isPerforated ){
-            int holeXPosition = x + 3; // 3 -> Largo de Square - Diametro
-            int holeYPosition = y + 3;
-            int dx = holeXPosition - getxCoordinate();
-            int dy = holeYPosition - getyCoordinate();
-            hole.moveVertical(dx);
-            hole.moveHorizontal(dy);
+        
+        if (isPerforated && (hole != null) ) {
+            hole.moveHorizontal(xDistance);
+            hole.moveVertical(yDistance);
+        }
+        
+        if (withMarbel && (marbel != null) ) {
+            marbel.moveHorizontal(xDistance);
+            marbel.moveVertical(yDistance);
         }
     }
     
@@ -104,15 +123,22 @@ public class Cell extends Rectangle
         if (isPerforated){
             hole.makeVisible();
         }
-        if (isPerforated && withMarbel){
-            marbel.makeVisible();
-            hole.makeInvisible();
+        if (withMarbel && marbel != null){
+        marbel.makeVisible();
+        // Ocultar el agujero si hay canica
+            if (isPerforated && hole != null) {
+                hole.makeInvisible();
+            }
         }
     }
     /**
      * Hide the cell
      */
+
     public void makeInvisible(){
         rect.makeInvisible();
+    }
+    public void changeCellColor(String colorToChange) {
+        rect.changeColor(colorToChange);
     }
 }

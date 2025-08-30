@@ -256,4 +256,11 @@ public class Circle{
         color = newColor;
         draw();
     }
+    
+    public void moveTo(int x, int y){
+    erase();
+    xPosition = x;
+    yPosition = y;
+    draw();
+    }
 }

@@ -27,7 +27,7 @@ public class Canvas{
     public static Canvas getCanvas(){
         if(canvasSingleton == null) {
             canvasSingleton = new Canvas("BlueJ Shapes Demo", 300, 300, 
-                                         Color.red);
+                                         Color.white);
         }
         canvasSingleton.setVisible(true);
         return canvasSingleton;
@@ -189,16 +189,26 @@ public class Canvas{
         private Shape shape;
         private String colorString;
 
-        public ShapeDescription(Shape shape, String color){
+    public ShapeDescription(Shape shape, String color){
             this.shape = shape;
             colorString = color;
         }
 
-        public void draw(Graphics2D graphic){
-            setForegroundColor(colorString);
-            graphic.draw(shape);
-            graphic.fill(shape);
+    public void draw(Graphics2D graphic){
+        // Guardar color original
+        Color originalColor = graphic.getColor();
+        
+        // Dibujar relleno con el color del objeto
+        setForegroundColor(colorString);
+        graphic.fill(shape);
+        
+        // Dibujar borde negro
+        graphic.setColor(Color.black);
+        graphic.draw(shape);
+        
+        // Restaurar color original
+        graphic.setColor(originalColor);
         }
     }
-
 }
+
