@@ -11,6 +11,7 @@ public class Cell extends Rectangle
     private Circle marbel;
     private boolean withMarbel;
     private boolean isPerforated;
+    private String marbelColor; // Para guardar el color de la canica
 
     /**
      * Constructor for objects of class Cell
@@ -55,12 +56,14 @@ public class Cell extends Rectangle
     public void in(String marbel){
         this.marbel = new Circle();
         this.marbel.changeColor(marbel);
+        this.marbelColor = marbel;
         
         if (this.marbel != null) {
         this.marbel.moveTo(
             rect.getxCoordinate() + 3,
             rect.getyCoordinate() + 3
                 );
+            this.marbel.makeVisible(); // se agregó
             }
         withMarbel = true;
     }
@@ -68,18 +71,29 @@ public class Cell extends Rectangle
     /**
      * Extract a marbel from the cell
      */
-    public String out(String marbel) {
+    public String out() {
         if(withMarbel){
-            String marbelColor = marbel;
-            marbel = null;
+            String color = this.marbelColor;
+            this.marbelColor = null;
             this.marbel.makeInvisible();
-            return marbelColor;
-        }
+            this.marbel = null;
+            withMarbel = false;
+            return color;
+        } 
         else{
             return "";
         }
     }
+
+    /**
+     * returns the color of the marbel
+     * @return
+     */
+    public String getMarbelColor(){
+        return marbelColor;
+    }
     
+
     /**
      * Check if the cell has a marbel
      */
@@ -140,5 +154,9 @@ public class Cell extends Rectangle
     }
     public void changeCellColor(String colorToChange) {
         rect.changeColor(colorToChange);
+    }
+
+    public Circle getMarbel(){
+        return marbel;
     }
 }
