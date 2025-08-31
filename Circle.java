@@ -149,6 +149,10 @@ public class Circle{
         }
     }
     
+    public void setErase(){
+        erase();
+    }
+    
     /**
      * Move the circle a few pixels to the right.
      */

@@ -195,5 +195,12 @@ public class Rectangle{
             canvas.erase(this);
         }
     }
+
+    /**
+     * Gets the color of the rectangle
+     */
+    public String getColor(){
+        return color;
+    }
 }
 

@@ -24,6 +24,9 @@ public class Pair
             return columna;
         }
 
+        /**
+         * Compare if another object is a Pair with the same fila and columna
+         */
         @Override
         public boolean equals(Object obj) {
             if (this == obj) return true;
@@ -32,6 +35,9 @@ public class Pair
             return fila == otra.fila && columna == otra.columna;
         }
 
+        /**
+         * Return a STRING with coordinates format (fila, columna)
+         */
         @Override
         public String toString() {
             return "(" + fila + "," + columna + ")";
