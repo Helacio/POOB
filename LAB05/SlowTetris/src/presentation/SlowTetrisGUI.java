@@ -11,6 +11,9 @@ public class SlowTetrisGUI extends JFrame {
 	private JMenuBar menuBar;
 	private JMenu menuFiles;
 	private JMenuItem menuItemNew, menuItemSave, menuItemExit, menuItemOpen;
+	private JTextField hide, width, score, time;
+	private JPanel infoPanel, optionsPanel, configPanel, controlPanel, arrowsPanel;
+	private JTextField configHeight, configWidth;
 	
 	
 	public SlowTetrisGUI() {
@@ -27,11 +30,105 @@ public class SlowTetrisGUI extends JFrame {
 		//Get the size of the screen
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
+		//Setting the layout like BorderLayOut
+		setLayout(new BorderLayout());
+
+		//Centering the JFrame
 		int width = screenSize.width / 2;
 		int height = screenSize.height / 2;
-		
 		this.setSize(width, height);
 		this.setLocationRelativeTo(null);
+		
+		//Performance North zone
+		configPanel = new JPanel(new FlowLayout());
+		configPanel.add(new JLabel("Height:"));
+		configHeight = new JTextField(3);
+		configPanel.add(configHeight);
+		
+		configPanel.add(new JLabel("Width"));
+		configWidth = new JTextField(3);
+		configPanel.add(configWidth);
+		
+		JButton btnConfirm = new JButton("Confirm");
+		configPanel.add(btnConfirm);
+		
+		add(configPanel, BorderLayout.NORTH);
+		
+		//Performance West zone
+		optionsPanel = new JPanel();
+		optionsPanel.setLayout(new GridLayout(4,1, 10, 10));
+		optionsPanel.add(new JButton("Modify"));
+		optionsPanel.add(new JButton("Save"));
+		optionsPanel.add(new JButton("Restart"));
+		optionsPanel.add(new JButton("Open"));
+		
+		add(optionsPanel, BorderLayout.WEST);
+		
+		
+		//Preparing buttons game
+		arrowsPanel = new JPanel(new BorderLayout());
+		controlPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(4,4,4,4);
+		
+		JButton btnWest = new JButton("w");
+		c.gridx = 0;
+		c.gridy = 1;
+		controlPanel.add(btnWest, c);
+		
+		JButton btnRotRight = new JButton("RR");
+		c.gridx = 2;
+		c.gridy = 1;
+		controlPanel.add(btnRotRight, c);
+		
+		JButton btnRotLeft = new JButton("RL");
+		c.gridx = 1;
+		c.gridy = 1;
+		controlPanel.add(btnRotLeft, c);
+		
+		JButton btnRight = new JButton("R");
+		c.gridx = 3;
+		c.gridy = 1;
+		controlPanel.add(btnRight,c);
+		
+		JButton btnDown = new JButton("D");
+		c.gridx = 1;
+		c.gridy = 2;
+		c.gridwidth = 2;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		controlPanel.add(btnDown, c);
+		
+		arrowsPanel.add(controlPanel, BorderLayout.CENTER);
+		add(arrowsPanel, BorderLayout.SOUTH);
+		
+		
+		//Preparing East zone
+		
+		//Info panel
+		JPanel eastPanel = new JPanel(new BorderLayout());
+		infoPanel = new JPanel(new GridLayout(2,1,5,5));
+		infoPanel.add(new JLabel("Score:"));
+		JTextField infoScore = new JTextField("0", 5);
+		infoScore.setEditable(false);
+		infoPanel.add(infoScore);
+		
+		infoPanel.add(new JLabel("Time:"));
+		JTextField infoTime = new JTextField("00:00", 5);
+		infoTime.setEditable(false);
+		infoPanel.add(infoTime);
+		
+		//Options panel
+		optionsPanel = new JPanel(new GridLayout(2,1,10,15));
+		JButton btnChangeColor = new JButton("Change Color");
+		optionsPanel.add(btnChangeColor);
+		JButton btnRefresh = new JButton("Refresh");
+		optionsPanel.add(btnRefresh);
+		
+		eastPanel.add(infoPanel, BorderLayout.NORTH);
+		eastPanel.add(optionsPanel, BorderLayout.CENTER);
+		
+		add(eastPanel, BorderLayout.EAST);
+		
 	}
 	
 	public void prepareActions() {
