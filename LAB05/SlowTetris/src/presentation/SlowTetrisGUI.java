@@ -12,7 +12,7 @@ public class SlowTetrisGUI extends JFrame {
 	private JMenu menuFiles;
 	private JMenuItem menuItemNew, menuItemSave, menuItemExit, menuItemOpen;
 	private JTextField hide, width, score, time;
-	private JPanel infoPanel, optionsPanel, configPanel, controlPanel, arrowsPanel;
+	private JPanel infoPanel, optionsPanel, configPanel, controlPanel, arrowsPanel, boardPanel;
 	private JTextField configHeight, configWidth;
 	
 	
@@ -22,6 +22,7 @@ public class SlowTetrisGUI extends JFrame {
 		prepareActions();
 		prepareElementsMenu();
 		prepareActionsMenu();
+		
 		
 		this.setVisible(true);
 	}
@@ -34,8 +35,8 @@ public class SlowTetrisGUI extends JFrame {
 		setLayout(new BorderLayout());
 
 		//Centering the JFrame
-		int width = screenSize.width / 2;
-		int height = screenSize.height / 2;
+		int width = (int) ((int) screenSize.width / 2.3) ;
+		int height = (int) ((int) screenSize.height / 1.2);
 		this.setSize(width, height);
 		this.setLocationRelativeTo(null);
 		
@@ -50,7 +51,15 @@ public class SlowTetrisGUI extends JFrame {
 		configPanel.add(configWidth);
 		
 		JButton btnConfirm = new JButton("Confirm");
+		//Generate the board
+		btnConfirm.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						prepareElementsBoard();
+					}
+				});
 		configPanel.add(btnConfirm);
+		
 		
 		add(configPanel, BorderLayout.NORTH);
 		
@@ -129,6 +138,40 @@ public class SlowTetrisGUI extends JFrame {
 		
 		add(eastPanel, BorderLayout.EAST);
 		
+	}
+	
+	public void prepareElementsBoard() {
+		if(boardPanel != null) remove(boardPanel);
+		
+		int height = Integer.parseInt(configWidth.getText());
+		int width = Integer.parseInt(configHeight.getText());
+		
+		if(height < 0 || width < 0) {
+			JOptionPane.showMessageDialog(this, "Ingrese valores positivos");
+		}
+		
+		boardPanel = new JPanel();
+		boardPanel.setLayout(new GridLayout(height, width));
+		boardPanel.setBackground(Color.LIGHT_GRAY);
+		
+		//Creating an array to store the cells
+		int totalCells = height * width;
+		JPanel[] cells = new JPanel [totalCells];
+		for(int i = 0; i < totalCells; i++) {
+			cells[i] = new JPanel();
+			cells[i].setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+			cells[i].setBackground(Color.WHITE);
+			boardPanel.add(cells[i]);
+		}
+		
+		
+		add(boardPanel, BorderLayout.CENTER);
+		revalidate();
+		repaint();
+	}
+	
+	public void refresh() {
+		prepareElementsBoard();
 	}
 	
 	public void prepareActions() {
