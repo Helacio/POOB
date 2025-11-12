@@ -142,6 +142,7 @@ public class SlowTetrisGUI extends JFrame {
 					}
 				}
 			});
+		
 	}
 	
 	public void prepareElementsMenu() {
@@ -173,12 +174,65 @@ public class SlowTetrisGUI extends JFrame {
 					if(result == JOptionPane.YES_OPTION) {
 						dispose();
 					}
-				}
+					
+			}
 			});
+		menuItemOpen.addActionListener(
+			new ActionListener() {
+				public void actionPerformed(ActionEvent ev) {
+					
+					JFileChooser file = new JFileChooser();
+					
+					int result = file.showOpenDialog(null);
+					
+						
+					String path = file.getSelectedFile().getAbsolutePath();
+						
+					JOptionPane.showMessageDialog(null, "File path selected: " + path + "\n" + "\tYou want open. ");
+					
+					
+					
+				}
+			
+			
+			
+			});
+		
+		menuItemSave.addActionListener(
+			new ActionListener() {
+				
+				public void actionPerformed(ActionEvent ev) {
+					
+					JFileChooser file = new JFileChooser();
+					
+					int result = file.showSaveDialog(null);
+					
+						
+					String path = file.getSelectedFile().getAbsolutePath();
+						
+					JOptionPane.showMessageDialog(null, "File path selected: " + path + "\n" + "\tYou want save. ");
+					
+					
+				}
+				
+				
+			}
+				
+				
+				
+		
+				
+		);
+		
 	}
+		
+	
 
 	public static void main(String[] args) {
 		SlowTetrisGUI game = new SlowTetrisGUI();
+		
+		
+		
 	} 
 	
 }
