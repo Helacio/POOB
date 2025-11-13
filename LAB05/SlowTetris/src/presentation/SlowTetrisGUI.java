@@ -12,9 +12,8 @@ public class SlowTetrisGUI extends JFrame {
 	private JMenuBar menuBar;
 	private JMenu menuFiles;
 	private JMenuItem menuItemNew, menuItemSave, menuItemExit, menuItemOpen;
-	private JTextField hide, width, score, time;
+	private JTextField score, time, configHeight, configWidth;
 	private JPanel infoPanel, optionsPanel, configPanel, controlPanel, arrowsPanel, boardPanel;
-	private JTextField configHeight, configWidth;
 	private JButton btnConfirm, btnChangeColor, btnRefresh, btnDown, btnRight, btnRotLeft, btnRotRight, btnWest;
 	private JPanel[] cells;
 	
