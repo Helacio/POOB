@@ -12,8 +12,28 @@ public class UnitTest {
 		
 		SlowTetris g = new SlowTetris();
 		
+		
+		
 	}
 	
+	@Test
+	public void shouldDownPiece() {
+		
+		
+		
+	}
 	
+	@Test
+	public void shouldFailInput() {
+		
+		
+	}
+	
+	@Test 
+	public void shouldCollideTetris() {
+		
+		
+		
+	}
 	
 }

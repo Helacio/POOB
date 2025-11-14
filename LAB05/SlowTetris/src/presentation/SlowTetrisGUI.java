@@ -25,8 +25,6 @@ public class SlowTetrisGUI extends JFrame {
 		prepareElementsMenu();
 		prepareActionsMenu();
 		
-		
-		this.setVisible(true);
 	}
 	
 	public void prepareElements() {
@@ -37,8 +35,8 @@ public class SlowTetrisGUI extends JFrame {
 		setLayout(new BorderLayout());
 
 		//Centering the JFrame
-		int widthB = (int) ((int) screenSize.width / 2.3) ;
-		int heightB = (int) ((int) screenSize.height / 1.2);
+		widthB = (int) ((int) screenSize.width / 2.3) ;
+		heightB = (int) ((int) screenSize.height / 1.2);
 		this.setSize(widthB, heightB);
 		this.setLocationRelativeTo(null);
 		
