@@ -10,7 +10,7 @@ public class UnitTest {
 	@Test
 	public void shouldCreateGame() {
 		
-		SlowTetris g = new SlowTetris();
+		SlowTetris g = new SlowTetris(3, 7);
 		
 		
 		

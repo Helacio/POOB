@@ -1,5 +1,8 @@
 package presentation;
 import javax.swing.*;
+
+import domain.SlowTetris;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -14,11 +17,12 @@ public class SlowTetrisGUI extends JFrame {
 	private JMenuItem menuItemNew, menuItemSave, menuItemExit, menuItemOpen;
 	private JTextField score, time, configHeight, configWidth;
 	private JPanel infoPanel, optionsPanel, configPanel, controlPanel, arrowsPanel, boardPanel;
-	private JButton btnConfirm, btnChangeColor, btnRefresh, btnDown, btnRight, btnRotLeft, btnRotRight, btnWest;
+	private JButton btnPlay, btnChangeColor, btnRefresh, btnDown, btnRight, btnRotLeft, btnRotRight, btnWest;
 	private JPanel[] cells;
 	
 	
 	public SlowTetrisGUI() {
+		
 		super("SlowTetris");
 		prepareElements();
 		prepareActions();
@@ -50,9 +54,9 @@ public class SlowTetrisGUI extends JFrame {
 		configWidth = new JTextField(3);
 		configPanel.add(configWidth);
 		
-		btnConfirm = new JButton("Confirm");
+		btnPlay = new JButton("Play");
 		
-		configPanel.add(btnConfirm);
+		configPanel.add(btnPlay);
 		
 		
 		add(configPanel, BorderLayout.NORTH);
@@ -132,6 +136,8 @@ public class SlowTetrisGUI extends JFrame {
 		
 		add(eastPanel, BorderLayout.EAST);
 		
+		setVisible(true);
+		
 	}
 	
 	public void prepareElementsBoard() {
@@ -167,9 +173,7 @@ public class SlowTetrisGUI extends JFrame {
 	
 	}
 	
-	public void refresh() {
-		prepareElementsBoard();
-	}
+	
 	
 	public void prepareActions() {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -193,14 +197,53 @@ public class SlowTetrisGUI extends JFrame {
 		
 		});
 		
-		btnConfirm.addActionListener(
+		btnPlay.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						
 						prepareElementsBoard();
+						
+						SlowTetris domain = new SlowTetris(heightB, widthB); 
+						
 					}
 			
 		});
 		
+		btnRefresh.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						
+						refresh();
+						
+					}
+					
+					
+					
+				}
+				
+				
+				
+		);
+		
+	}
+	
+	public void refresh() {
+		
+		Color c = Color.WHITE;
+		
+		for (JPanel p : cells) {
+			
+			p.setBackground(c);
+			
+		}
+		
+		if (boardPanel != null) {
+			
+			boardPanel.revalidate();
+			boardPanel.repaint();
+			boardPanel.setBackground(c);
+			
+		}
 	}
 	
 	private void changeColorMatrix() {
@@ -274,8 +317,6 @@ public class SlowTetrisGUI extends JFrame {
 							
 						JOptionPane.showMessageDialog(null, "File path selected: " + path + "\n" + "\tYou want open. ");
 						
-						
-						
 					}
 				
 				
@@ -304,9 +345,5 @@ public class SlowTetrisGUI extends JFrame {
 					
 		);
 	}
-
-	public static void main(String[] args) {
-		SlowTetrisGUI game = new SlowTetrisGUI();
-	} 
 	
 }
