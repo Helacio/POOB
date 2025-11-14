@@ -7,12 +7,15 @@ import java.awt.event.*;
 
 public class SlowTetrisGUI extends JFrame {
 	
+	private int widthB, heightB;
+	
 	private JMenuBar menuBar;
 	private JMenu menuFiles;
 	private JMenuItem menuItemNew, menuItemSave, menuItemExit, menuItemOpen;
-	private JTextField hide, width, score, time;
+	private JTextField score, time, configHeight, configWidth;
 	private JPanel infoPanel, optionsPanel, configPanel, controlPanel, arrowsPanel, boardPanel;
-	private JTextField configHeight, configWidth;
+	private JButton btnConfirm, btnChangeColor, btnRefresh, btnDown, btnRight, btnRotLeft, btnRotRight, btnWest;
+	private JPanel[] cells;
 	
 	
 	public SlowTetrisGUI() {
@@ -22,8 +25,6 @@ public class SlowTetrisGUI extends JFrame {
 		prepareElementsMenu();
 		prepareActionsMenu();
 		
-		
-		this.setVisible(true);
 	}
 	
 	public void prepareElements() {
@@ -34,9 +35,9 @@ public class SlowTetrisGUI extends JFrame {
 		setLayout(new BorderLayout());
 
 		//Centering the JFrame
-		int width = (int) ((int) screenSize.width / 2.3) ;
-		int height = (int) ((int) screenSize.height / 1.2);
-		this.setSize(width, height);
+		widthB = (int) ((int) screenSize.width / 2.3) ;
+		heightB = (int) ((int) screenSize.height / 1.2);
+		this.setSize(widthB, heightB);
 		this.setLocationRelativeTo(null);
 		
 		//Performance North zone
@@ -49,14 +50,8 @@ public class SlowTetrisGUI extends JFrame {
 		configWidth = new JTextField(3);
 		configPanel.add(configWidth);
 		
-		JButton btnConfirm = new JButton("Confirm");
-		//Generate the board
-		btnConfirm.addActionListener(
-				new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						prepareElementsBoard();
-					}
-				});
+		btnConfirm = new JButton("Confirm");
+		
 		configPanel.add(btnConfirm);
 		
 		
@@ -79,27 +74,27 @@ public class SlowTetrisGUI extends JFrame {
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(4,4,4,4);
 		
-		JButton btnWest = new JButton("w");
+		btnWest = new JButton("w");
 		c.gridx = 0;
 		c.gridy = 1;
 		controlPanel.add(btnWest, c);
 		
-		JButton btnRotRight = new JButton("RR");
+		btnRotRight = new JButton("RR");
 		c.gridx = 2;
 		c.gridy = 1;
 		controlPanel.add(btnRotRight, c);
 		
-		JButton btnRotLeft = new JButton("RL");
+		btnRotLeft = new JButton("RL");
 		c.gridx = 1;
 		c.gridy = 1;
 		controlPanel.add(btnRotLeft, c);
 		
-		JButton btnRight = new JButton("R");
+		btnRight = new JButton("R");
 		c.gridx = 3;
 		c.gridy = 1;
 		controlPanel.add(btnRight,c);
 		
-		JButton btnDown = new JButton("D");
+		btnDown = new JButton("D");
 		c.gridx = 1;
 		c.gridy = 2;
 		c.gridwidth = 2;
@@ -127,9 +122,9 @@ public class SlowTetrisGUI extends JFrame {
 		
 		//Options panel
 		optionsPanel = new JPanel(new GridLayout(2,1,10,15));
-		JButton btnChangeColor = new JButton("Change Color");
+		btnChangeColor = new JButton("Change Color");
 		optionsPanel.add(btnChangeColor);
-		JButton btnRefresh = new JButton("Refresh");
+		btnRefresh = new JButton("Refresh");
 		optionsPanel.add(btnRefresh);
 		
 		eastPanel.add(infoPanel, BorderLayout.NORTH);
@@ -142,31 +137,34 @@ public class SlowTetrisGUI extends JFrame {
 	public void prepareElementsBoard() {
 		if(boardPanel != null) remove(boardPanel);
 		
-		int height = Integer.parseInt(configWidth.getText());
-		int width = Integer.parseInt(configHeight.getText());
+		int heightB = Integer.parseInt(configWidth.getText());
+		int widthB = Integer.parseInt(configHeight.getText());
 		
-		if(height < 0 || width < 0) {
+		if(heightB < 0 || widthB < 0) {
 			JOptionPane.showMessageDialog(this, "Ingrese valores positivos");
 		}
 		
 		boardPanel = new JPanel();
-		boardPanel.setLayout(new GridLayout(height, width));
+		boardPanel.setLayout(new GridLayout(heightB, widthB));
 		boardPanel.setBackground(Color.LIGHT_GRAY);
 		
 		//Creating an array to store the cells
-		int totalCells = height * width;
-		JPanel[] cells = new JPanel [totalCells];
+		int totalCells = heightB * widthB;
+		
+		cells = new JPanel [totalCells];
 		for(int i = 0; i < totalCells; i++) {
+			
 			cells[i] = new JPanel();
 			cells[i].setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 			cells[i].setBackground(Color.WHITE);
 			boardPanel.add(cells[i]);
-		}
 		
+		}
 		
 		add(boardPanel, BorderLayout.CENTER);
 		revalidate();
 		repaint();
+	
 	}
 	
 	public void refresh() {
@@ -184,7 +182,52 @@ public class SlowTetrisGUI extends JFrame {
 					}
 				}
 			});
+		
+		btnChangeColor.addActionListener(
+			new ActionListener() {	
+				public void actionPerformed(ActionEvent e) {
+					
+					changeColorMatrix();
+				
+				}
+		
+		});
+		
+		btnConfirm.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						prepareElementsBoard();
+					}
+			
+		});
+		
 	}
+	
+	private void changeColorMatrix() {
+	
+		Color color = JColorChooser.showDialog(this, "Change color game", boardPanel.getBackground());
+		
+		
+			
+		for (JPanel p : cells) {
+			
+			if (color != null) {
+				p.setBackground(color); 
+			}
+		
+		}
+		
+		if (boardPanel != null) {
+			
+			boardPanel.revalidate();
+			boardPanel.repaint();
+			boardPanel.setBackground(color);
+			
+		}
+		
+	}
+		
+	
 	
 	public void prepareElementsMenu() {
 		menuBar = new JMenuBar();
@@ -207,7 +250,7 @@ public class SlowTetrisGUI extends JFrame {
 	}
 	
 	public void prepareActionsMenu() {
-		//Item salir
+		
 		menuItemExit.addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent ev) {
@@ -238,28 +281,28 @@ public class SlowTetrisGUI extends JFrame {
 				
 				});
 			
-			menuItemSave.addActionListener(
-				new ActionListener() {
+		menuItemSave.addActionListener(
+			new ActionListener() {
 					
-					public void actionPerformed(ActionEvent ev) {
+				public void actionPerformed(ActionEvent ev) {
 						
-						JFileChooser file = new JFileChooser();
+					JFileChooser file = new JFileChooser();
 						
-						int result = file.showSaveDialog(null);
+					int result = file.showSaveDialog(null);
 						
 							
-						String path = file.getSelectedFile().getAbsolutePath();
+					String path = file.getSelectedFile().getAbsolutePath();
 							
-						JOptionPane.showMessageDialog(null, "File path selected: " + path + "\n" + "\tYou want save. ");
+					JOptionPane.showMessageDialog(null, "File path selected: " + path + "\n" + "\tYou want save. ");
 						
 						
-					}
-					
-					
 				}
 					
 					
-			);
+			}
+					
+					
+		);
 	}
 
 	public static void main(String[] args) {
@@ -267,4 +310,3 @@ public class SlowTetrisGUI extends JFrame {
 	} 
 	
 }
-
