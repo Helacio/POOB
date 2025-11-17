@@ -1,10 +1,12 @@
 package presentation;
 import javax.swing.*;
+import domain.SlowTetris;
 
 import domain.SlowTetris;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
 
 
 
@@ -12,12 +14,13 @@ public class SlowTetrisGUI extends JFrame {
 	
 	private int widthB, heightB;
 	
+	private SlowTetris game;
 	private JMenuBar menuBar;
 	private JMenu menuFiles;
 	private JMenuItem menuItemNew, menuItemSave, menuItemExit, menuItemOpen;
 	private JTextField score, time, configHeight, configWidth;
 	private JPanel infoPanel, optionsPanel, configPanel, controlPanel, arrowsPanel, boardPanel;
-	private JButton btnPlay, btnChangeColor, btnRefresh, btnDown, btnRight, btnRotLeft, btnRotRight, btnWest;
+	private JButton btnPlay, btnChangeColor, btnRefresh, btnDown, btnRight, btnRotLeft, btnRotRight, btnLeft, btnDrop;
 	private JPanel[] cells;
 	
 	
@@ -78,10 +81,10 @@ public class SlowTetrisGUI extends JFrame {
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(4,4,4,4);
 		
-		btnWest = new JButton("w");
+		btnLeft = new JButton("w");
 		c.gridx = 0;
 		c.gridy = 1;
-		controlPanel.add(btnWest, c);
+		controlPanel.add(btnLeft, c);
 		
 		btnRotRight = new JButton("RR");
 		c.gridx = 2;
@@ -104,6 +107,13 @@ public class SlowTetrisGUI extends JFrame {
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		controlPanel.add(btnDown, c);
+		
+		//Boton drop
+		btnDrop = new JButton("Drop");
+		c.gridx = 1;
+		c.gridy = 3;
+		c.gridwidth = 2;
+		controlPanel.add(btnDrop, c);
 		
 		arrowsPanel.add(controlPanel, BorderLayout.CENTER);
 		add(arrowsPanel, BorderLayout.SOUTH);
@@ -150,6 +160,7 @@ public class SlowTetrisGUI extends JFrame {
 			JOptionPane.showMessageDialog(this, "Ingrese valores positivos");
 		}
 		
+		game = new SlowTetris(heightB, widthB);
 		boardPanel = new JPanel();
 		boardPanel.setLayout(new GridLayout(heightB, widthB));
 		boardPanel.setBackground(Color.LIGHT_GRAY);
@@ -203,8 +214,6 @@ public class SlowTetrisGUI extends JFrame {
 						
 						prepareElementsBoard();
 						
-						SlowTetris domain = new SlowTetris(heightB, widthB); 
-						
 					}
 			
 		});
@@ -212,39 +221,120 @@ public class SlowTetrisGUI extends JFrame {
 		btnRefresh.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						
-						refresh();
-						
+						refresh();	
 					}
-					
-					
-					
 				}
-				
-				
-				
 		);
+		
+		btnDown.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						if(game != null) {
+							game.movePieceDown();
+							refresh();
+						}
+					}
+				});
+		
+		btnRight.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						if(game != null) {
+							game.movePieceRight();
+							refresh();
+						}
+					}
+				});
+		
+		btnLeft.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						if(game != null) {
+							game.movePieceLeft();
+							refresh();
+						}
+					}
+				});
+		
+		btnRotRight.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						if(game != null) {
+							game.rotatePiece();
+							refresh();
+						}
+					}
+				});
+		
+		//Temporal
+		btnRotLeft.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						if(game != null) {
+							game.dropPiece();
+							refresh();
+						}
+					}
+				});
+		
+		btnDrop.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						if(game != null) {
+							game.dropPiece();
+							refresh();
+						}
+					}
+				});
 		
 	}
 	
 	public void refresh() {
 		
-		Color c = Color.WHITE;
-		
-		for (JPanel p : cells) {
-			
-			p.setBackground(c);
-			
+		if(game == null || cells == null) {
+			return;
 		}
 		
-		if (boardPanel != null) {
-			
-			boardPanel.revalidate();
-			boardPanel.repaint();
-			boardPanel.setBackground(c);
-			
+		char[][] board = game.getBoardWithPiece();
+		
+		for(int i = 0; i < board.length; i++) {
+			for(int j = 0; j < board[0].length; j++ ) {
+				int indexCell = i * board[0].length +j;
+				
+				if(board[i][j] == '0') {
+					cells[indexCell].setBackground(Color.white);
+				} else {
+					cells[indexCell].setBackground(getPieceColor(board[i][j]));
+				}
+			}
+		}
+		
+		boardPanel.revalidate();
+		boardPanel.repaint();
+	
+	}
+	
+	private Color getPieceColor(char type) {
+		switch(type) {
+			case 'I':
+				return Color.RED;
+			case 'O': 
+				return Color.BLUE;
+		    case 'S': 
+		    	return Color.GREEN;
+		    case 'T': 
+		    	return Color.ORANGE;
+		    case 'J': 
+		    	return Color.PINK;
+		    case 'L': 
+		    	return Color.CYAN;
+		    case 'Z': 
+		    	return Color.GRAY;
+		    default: 
+		    	return Color.WHITE;
 		}
 	}
+	
 	
 	private void changeColorMatrix() {
 	
@@ -307,14 +397,9 @@ public class SlowTetrisGUI extends JFrame {
 		menuItemOpen.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent ev) {
-						
 						JFileChooser file = new JFileChooser();
-						
 						int result = file.showOpenDialog(null);
-						
-							
 						String path = file.getSelectedFile().getAbsolutePath();
-							
 						JOptionPane.showMessageDialog(null, "File path selected: " + path + "\n" + "\tYou want open. ");
 						
 					}
@@ -325,25 +410,34 @@ public class SlowTetrisGUI extends JFrame {
 		menuItemSave.addActionListener(
 			new ActionListener() {
 					
-				public void actionPerformed(ActionEvent ev) {
-						
-					JFileChooser file = new JFileChooser();
-						
-					int result = file.showSaveDialog(null);
-						
-							
+				public void actionPerformed(ActionEvent ev) {						
+					JFileChooser file = new JFileChooser();					
+					int result = file.showSaveDialog(null);							
 					String path = file.getSelectedFile().getAbsolutePath();
-							
 					JOptionPane.showMessageDialog(null, "File path selected: " + path + "\n" + "\tYou want save. ");
 						
-						
 				}
-					
-					
-			}
-					
-					
-		);
+			});
+		
+		JButton btnNewPiece = new JButton("New Piece");
+        arrowsPanel.add(btnNewPiece, BorderLayout.NORTH);
+        
+        btnNewPiece.addActionListener(
+        		new ActionListener() {
+        			public void actionPerformed(ActionEvent e) {
+        				if(game != null) {
+        	                game.generatePiece();
+        	                refresh();
+        	            }
+        			}
+        });
+		}
+	
+	
+	public static void main(String[] args) {
+        
+        SlowTetrisGUI gui = new SlowTetrisGUI();
+        
 	}
 	
 }
