@@ -153,7 +153,7 @@ public class ValleyGUI extends JFrame{
     				public void actionPerformed(ActionEvent e) {
     					ValleyGUI.this.optionExit();
     				}
-    			}    			
+    			}
     		);
     	menuItemNew.addActionListener(
     			new ActionListener() {

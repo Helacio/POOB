@@ -1,7 +1,11 @@
 package domain;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
+
+import javax.swing.JTextArea;
 
 /*No olviden adicionar la documentacion*/
 public class Valley implements Serializable{
@@ -109,6 +113,41 @@ public class Valley implements Serializable{
      * @throws ValleyException if the method is called, tells you the save option is in construction
      */
     public void save(File file) throws ValleyException{
+    	if (file == null) throw new ValleyException(ValleyException.OPTION_SAVE + " Archivo: " + file.getName());
+    	try {
+    		if (file != null) {
+    			FileWriter saving = new FileWriter(file);
+    			saving.write("SIZE: " + SIZE + "\n");
+    			
+    			for (int i = 0; i < places.length; i++) {
+    				for (int j = 0; j < places[i].length; j++) {
+    					saving.write("Unit " + "[" + i+ "]" +"[" + j+ "]" + ":"+ places[i][j].getClass().getSimpleName() + "\n");
+    				}
+    			}
+    			saving.close();
+    		}
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    /**
+     * Opens a specific file
+     * This method is in construction
+     * @param file the name or path of the file
+     * @throws ValleyException if the method is called, tells you the open option is in construction
+     */
+    public Valley open00(File file) throws ValleyException {
+    	throw new ValleyException(ValleyException.OPTION_OPEN + " Archivo: " + file.getName());
+    }
+    
+    /**
+     * Saves a specific file
+     * This method is in construction
+     * @param file the name or path of the file
+     * @throws ValleyException if the method is called, tells you the save option is in construction
+     */
+    public void save00(File file) throws ValleyException{
     	throw new ValleyException(ValleyException.OPTION_SAVE + " Archivo: " + file.getName());
     }
     
