@@ -1,9 +1,10 @@
 package domain;
 import java.io.File;
+import java.io.Serializable;
 import java.util.*;
 
 /*No olviden adicionar la documentacion*/
-public class Valley{
+public class Valley implements Serializable{
     static private int SIZE=25;
     private Unit[][] places;
     
@@ -22,7 +23,7 @@ public class Valley{
         someUnits();
         
     }
-
+    
     public int  getSize(){
         return SIZE;
     }

@@ -96,7 +96,8 @@ public class ValleyGUI extends JFrame{
     						}
     					}
     				}
-    			});
+    			}
+    		);
     	
     	menuItemSave.addActionListener(
     			new ActionListener() {
@@ -112,7 +113,8 @@ public class ValleyGUI extends JFrame{
     						}
     					}
     				}
-    	});
+    			}
+    		);
     	
     	menuItemImport.addActionListener(
     			new ActionListener() {
@@ -128,7 +130,8 @@ public class ValleyGUI extends JFrame{
     						}
     					}
     				}
-    			});
+    			}
+    		);
     	menuItemExport.addActionListener(
     			new ActionListener() {
     				public void actionPerformed(ActionEvent e) {
@@ -143,26 +146,33 @@ public class ValleyGUI extends JFrame{
     						}
     					}
     				}
-    			});
+    			}	
+    		);
     	menuItemExit.addActionListener(
     			new ActionListener() {
     				public void actionPerformed(ActionEvent e) {
-    					System.exit(0);
+    					ValleyGUI.this.optionExit();
     				}
     			}    			
     		);
     	menuItemNew.addActionListener(
     			new ActionListener() {
     				public void actionPerformed(ActionEvent e) {
-    					ValleyGUI newGame = new ValleyGUI();
-    					newGame.setVisible(true);
-    					ValleyGUI.this.dispose();
+    					ValleyGUI.this.optionNew();
     				}
     			}
     		);
     }
     
-
+    private void optionExit() {
+    	System.exit(0);
+    }
+    
+    private void optionNew() {
+    	theValley =  null;
+    	theValley = new Valley();
+    }
+    
     private void prepareActions(){
         setDefaultCloseOperation(EXIT_ON_CLOSE);    
         

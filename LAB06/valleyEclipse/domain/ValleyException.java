@@ -1,6 +1,8 @@
 package domain;
 
-public class ValleyException extends Exception{
+import java.io.Serializable;
+
+public class ValleyException extends Exception implements Serializable{
 	public static final String OPTION_OPEN = "Opcion OPEN en construcción";
 	public static final String OPTION_SAVE = "Opcion SAVE en construccion";
 	public static final String OPTION_IMPORT = "Opcion IMPORT en construcción";

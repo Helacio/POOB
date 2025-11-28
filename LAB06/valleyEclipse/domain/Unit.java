@@ -4,7 +4,7 @@ import java.awt.Color;
 /**
  * The Unit interface, which defines the behavior of the game entities.
  */
-public interface Unit{
+public interface Unit {
     public static final int SQUARE = 2;
     public static final int ROUND = 1;
 
