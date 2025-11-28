@@ -1,4 +1,5 @@
 package domain;
+import java.io.File;
 import java.util.*;
 
 /*No olviden adicionar la documentacion*/
@@ -88,5 +89,45 @@ public class Valley{
             }
         }
     }
-
+    
+    
+    /**
+     * Opens a specific file
+     * This method is in construction
+     * @param file the name or path of the file
+     * @throws ValleyException if the method is called, tells you the open option is in construction
+     */
+    public Valley open(File file) throws ValleyException {
+    	throw new ValleyException(ValleyException.OPTION_OPEN + " Archivo: " + file.getName());
+    }
+    
+    /**
+     * Saves a specific file
+     * This method is in construction
+     * @param file the name or path of the file
+     * @throws ValleyException if the method is called, tells you the save option is in construction
+     */
+    public void save(File file) throws ValleyException{
+    	throw new ValleyException(ValleyException.OPTION_SAVE + " Archivo: " + file.getName());
+    }
+    
+    /**
+     * import a specific file
+     * This method is in construction
+     * @param file the name or path of the file
+     * @throws ValleyException if the method is called, tells you the import option is in construction
+     */
+    public Valley importFile(File file) throws ValleyException{
+    	throw new ValleyException(ValleyException.OPTION_IMPORT + " Archivo: " + file.getName());
+    }
+    
+    /**
+     * export a specific file
+     * This method is in construction
+     * @param file the name or path of the file
+     * @throws ValleyException if the method is called, tells you the export option is in construction
+     */
+    public void exportFile(File file) throws ValleyException{
+    	throw new ValleyException(ValleyException.OPTION_EXPORT + " Archivo: " + file.getName());
+    }
 }

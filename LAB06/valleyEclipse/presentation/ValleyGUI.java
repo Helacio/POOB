@@ -1,5 +1,7 @@
 package presentation;
 import domain.Valley;
+import domain.ValleyException;
+import domain.Animal;
 import domain.Unit;
 
 import javax.swing.*;
@@ -17,14 +19,17 @@ public class ValleyGUI extends JFrame{
     private Valley theValley;
     private JMenuBar menuBar;
     private JMenu menuFiles;
-    private JMenuItem menuItemNew, menuItemSave, menuItemOpen, menuItemExit, menuItemImport, menuItemExport;
+    private JMenuItem menuItemNew, menuItemSave, menuItemOpen, 
+    menuItemExit, menuItemImport, menuItemExport;
    
     
     private ValleyGUI() {
         theValley=new Valley();
         SIZE=theValley.getSize();
         prepareElements();
+        prepareElementsMenu();
         prepareActions();
+        prepareActionsMenu();
     }
     
     private void prepareElements() {
@@ -51,13 +56,94 @@ public class ValleyGUI extends JFrame{
 		menuItemExport = new JMenuItem("Exportar");
 		
 		menuFiles.add(menuItemNew);
+		menuFiles.addSeparator();
 		menuFiles.add(menuItemOpen);
 		menuFiles.add(menuItemSave);
+		menuFiles.addSeparator();
 		menuFiles.add(menuItemImport);
 		menuFiles.add(menuItemExport);
+		menuFiles.addSeparator();
 		menuFiles.add(menuItemExit);
+		
+		menuBar.add(menuFiles);
+		setJMenuBar(menuBar);
     }
     
+    /**
+     * Prepare the necessary components to start the menu
+     */
+    public void prepareActionsMenu(){
+    	menuItemNew.addActionListener(
+    			new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+    				JOptionPane.showMessageDialog(
+    						ValleyGUI.this, "Se ha establecido el juego.", "Nuevo juego", JOptionPane.INFORMATION_MESSAGE);
+					}	
+    			});
+    	
+    	menuItemOpen.addActionListener(
+    			new ActionListener() {
+    				public void actionPerformed(ActionEvent e) {
+    					JFileChooser fileChooser = new JFileChooser();
+    					int result = fileChooser.showOpenDialog(ValleyGUI.this);
+    					if(result == JFileChooser.APPROVE_OPTION) {
+    						File selectedFile = fileChooser.getSelectedFile();
+    						try {
+    							theValley.open(selectedFile);
+    						} catch(ValleyException ve) {
+    							JOptionPane.showMessageDialog(ValleyGUI.this, ve.getMessage());
+    						}
+    					}
+    				}
+    			});
+    	
+    	menuItemSave.addActionListener(
+    			new ActionListener() {
+    				public void actionPerformed(ActionEvent e) {
+    					JFileChooser fileChooser = new JFileChooser();
+    					int result = fileChooser.showSaveDialog(ValleyGUI.this);
+    					if(result == JFileChooser.APPROVE_OPTION) {
+    						File selectedFile = fileChooser.getSelectedFile();
+    						try {
+    							theValley.save(selectedFile);
+    						} catch(ValleyException ve) {
+    							 JOptionPane.showMessageDialog(ValleyGUI.this, ve.getMessage());
+    						}
+    					}
+    				}
+    	});
+    	
+    	menuItemImport.addActionListener(
+    			new ActionListener() {
+    				public void actionPerformed(ActionEvent e) {
+    					JFileChooser fileChooser = new JFileChooser();
+    					int result = fileChooser.showOpenDialog(ValleyGUI.this);
+    					if(result == JFileChooser.APPROVE_OPTION) {
+    						File selectedFile = fileChooser.getSelectedFile();
+    						try {
+    							theValley.importFile(selectedFile);
+    						} catch(ValleyException ve) {
+    							JOptionPane.showMessageDialog(ValleyGUI.this, ve.getMessage());
+    						}
+    					}
+    				}
+    			});
+    	menuItemExport.addActionListener(
+    			new ActionListener() {
+    				public void actionPerformed(ActionEvent e) {
+    					JFileChooser fileChooser = new JFileChooser();
+    					int result = fileChooser.showSaveDialog(ValleyGUI.this);
+    					if(result == JFileChooser.APPROVE_OPTION) {
+    						File selectedFile = fileChooser.getSelectedFile();
+    						try {
+    							theValley.exportFile(selectedFile);
+    						}catch(ValleyException ve) {
+    							JOptionPane.showMessageDialog(ValleyGUI.this, ve.getMessage());
+    						}
+    					}
+    				}
+    			});
+    }
     
 
     private void prepareActions(){
