@@ -19,7 +19,11 @@ public class Proof
     public Proof()
     {
     }
-
+    
+    @Test 
+    public void shouldDoThis() {
+    	
+    }
     /**
      * Sets up the test fixture.
      *

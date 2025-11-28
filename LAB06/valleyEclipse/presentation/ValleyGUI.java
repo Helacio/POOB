@@ -42,6 +42,7 @@ public class ValleyGUI extends JFrame{
         setSize(new Dimension(SIDE*SIZE+15,SIDE*SIZE+72)); 
         setResizable(false);
         photo.repaint();
+        setLocationRelativeTo(null);
     }
     
     public void prepareElementsMenu() {
@@ -143,6 +144,22 @@ public class ValleyGUI extends JFrame{
     					}
     				}
     			});
+    	menuItemExit.addActionListener(
+    			new ActionListener() {
+    				public void actionPerformed(ActionEvent e) {
+    					System.exit(0);
+    				}
+    			}    			
+    		);
+    	menuItemNew.addActionListener(
+    			new ActionListener() {
+    				public void actionPerformed(ActionEvent e) {
+    					ValleyGUI newGame = new ValleyGUI();
+    					newGame.setVisible(true);
+    					ValleyGUI.this.dispose();
+    				}
+    			}
+    		);
     }
     
 
