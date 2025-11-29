@@ -1,9 +1,11 @@
 package domain;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -21,7 +23,7 @@ import javax.swing.JTextArea;
  */
 
 public class Valley implements Serializable{
-    static private int SIZE=25;
+    public static final int SIZE=25;
     private Unit[][] places;
     
     public Valley() {
@@ -203,7 +205,27 @@ public class Valley implements Serializable{
      * @throws ValleyException if the method is called, tells you the import option is in construction
      */
     public Valley importFile(File file) throws ValleyException{
-    	throw new ValleyException(ValleyException.OPTION_IMPORT + " Archivo: " + file.getName());
+    	if (file == null) throw new ValleyException(ValleyException.OPTION_IMPORT + " Archivo: " + file.getName());
+		Valley valley = new Valley();
+    	
+    	try (FileReader fr = new FileReader(file);
+    		BufferedReader br = new BufferedReader(fr)) {
+    		String linea;
+    		br.readLine();
+    		br.readLine();
+    		while ((linea = br.readLine()) != null) {
+    			String[] partes = linea.trim().split(":");
+    			if (partes[0] == "Wolf") {
+    				int row = Integer.parseInt(partes[1]);
+    				int col = Integer.parseInt(partes[2]);
+    				Wolf toPut = new Wolf(valley, col, row);
+    				places[row][col] = toPut;
+    			}
+    		}
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    	return valley;
     }
     
     /**
@@ -227,7 +249,7 @@ public class Valley implements Serializable{
     		for(int i = 0; i < SIZE; i++) {
     			for(int j = 0; j < SIZE; j++) {
     				if (places[i][j] != null) {
-    					writer.write(places[i][j].getClass().getName() + ":" +  "      " + i + "       " + j + "\n");
+    					writer.write(places[i][j].getClass().getName() + ": "  + "     " + i + ": " + "     "+ j + "\n");
     				}
     			}
     		}
