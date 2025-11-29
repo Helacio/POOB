@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.*;
 
@@ -188,7 +189,11 @@ public class Valley implements Serializable{
      * @throws ValleyException if the method is called, tells you the export option is in construction
      */
     public void exportFile00(File file) throws ValleyException{
-    	throw new ValleyException(ValleyException.OPTION_EXPORT + " Archivo: " + file.getName());
+    	if (file == null) throw new ValleyException(ValleyException.OPTION_EXPORT + " Archivo: " + file.getName());
+    	
+    	
+    	
+    	
     }
     
     /**
@@ -208,13 +213,28 @@ public class Valley implements Serializable{
      * @throws IOException 
      * @throws ValleyException if the method is called, tells you the export option is in construction
      */
-    public void exportFile(File file) throws IOException{
-    	try(BufferedWriter writer = new BufferedWriter(new FileWriter(file))){
-    		for(int i = 0; 0 < SIZE; i++) {
-    			for(int j = 0; j < SIZE; j++) {
-    			}//Pendiente, no se que más hacer.
-    		}
+    public void exportFile(File file) throws IOException, ValleyException{
+    	
+    	if (file == null) {
+    		throw new ValleyException(ValleyException.OPTION_EXPORT + "File: null path provided");
     	}
+    	
+    	try(FileWriter fileToWrite = new FileWriter(file);
+    			BufferedWriter writer = new BufferedWriter(fileToWrite)){
+    	
+    		writer.write("=======ValleyGameDomain========\n");
+    		writer.write("Objects in cells: coordenade i, coordenade j\n");
+    		for(int i = 0; i < SIZE; i++) {
+    			for(int j = 0; j < SIZE; j++) {
+    				if (places[i][j] != null) {
+    					writer.write(places[i][j].getClass().getName() + ":" +  "      " + i + "       " + j + "\n");
+    				}
+    			}
+    		}
+    		writer.write("Size board: " + SIZE + " X " + SIZE);
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	} 
     }
     
     public Valley open(File file) throws ClassNotFoundException {

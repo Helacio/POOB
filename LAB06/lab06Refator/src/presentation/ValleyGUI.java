@@ -151,7 +151,9 @@ public class ValleyGUI extends JFrame{
     							theValley.exportFile(selectedFile);
     						}catch(IOException e1) {
     							JOptionPane.showMessageDialog(ValleyGUI.this, e1.getMessage());
-    						}
+    						} catch (ValleyException e1) {
+								e1.printStackTrace();
+							}
     					}
     				}
     			}	
@@ -181,11 +183,7 @@ public class ValleyGUI extends JFrame{
     						if(!selectedFile.getName().endsWith(".dat")) {
     							selectedFile = new File(selectedFile.getAbsolutePath() + ".dat");
     						}
-    						try {
-								theValley.save2(selectedFile);
-							} catch (ValleyException e1) {
-								JOptionPane.showMessageDialog(ValleyGUI.this, e1.getMessage());
-							}
+    						theValley.save2(selectedFile);
     					}
     				}
     			});
