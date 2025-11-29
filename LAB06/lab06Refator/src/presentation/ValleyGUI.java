@@ -88,7 +88,7 @@ public class ValleyGUI extends JFrame{
     						ValleyGUI.this, "Se ha establecido el juego.", "Nuevo juego", JOptionPane.INFORMATION_MESSAGE);
 					}	
     			});
-    	
+    	/** Primera version
     	menuItemOpen.addActionListener(
     			new ActionListener() {
     				public void actionPerformed(ActionEvent e) {
@@ -105,7 +105,7 @@ public class ValleyGUI extends JFrame{
     				}
     			}
     		);
-    	/** Primera version
+    	
     	menuItemSave.addActionListener(
     			new ActionListener() {
     				public void actionPerformed(ActionEvent e) {
@@ -187,6 +187,28 @@ public class ValleyGUI extends JFrame{
 							}
     					}
     				}
+    			});
+    	menuItemOpen.addActionListener(
+    			new ActionListener() {
+    				public void actionPerformed(ActionEvent e) {
+    					JFileChooser fileChooser = new JFileChooser();
+    					int result = fileChooser.showOpenDialog(ValleyGUI.this);
+    					if(result == JFileChooser.APPROVE_OPTION) {
+    						File selectedFile = fileChooser.getSelectedFile();
+    						Valley loadedValley = null;
+							try {
+								loadedValley = theValley.open(selectedFile);
+							} catch (ClassNotFoundException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+    						if(loadedValley != null) {
+    							theValley = loadedValley;
+    							photo.repaint();
+    						}
+    					}
+    				}
+    				
     			});
     }
     

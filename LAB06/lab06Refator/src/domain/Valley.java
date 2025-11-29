@@ -1,8 +1,10 @@
 package domain;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.*;
@@ -104,11 +106,11 @@ public class Valley implements Serializable{
      * This method is in construction
      * @param file the name or path of the file
      * @throws ValleyException if the method is called, tells you the open option is in construction
-     */
+     
     public Valley open(File file) throws ValleyException {
     	throw new ValleyException(ValleyException.OPTION_OPEN + " Archivo: " + file.getName());
     }
-    
+    */
     /**
      * Saves a specific file
      * This method is in construction
@@ -183,6 +185,15 @@ public class Valley implements Serializable{
      */
     public void exportFile(File file) throws ValleyException{
     	throw new ValleyException(ValleyException.OPTION_EXPORT + " Archivo: " + file.getName());
+    }
+    
+    public Valley open(File file) throws ClassNotFoundException {
+    	try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
+    		return (Valley) in.readObject();
+    	} catch (IOException e){
+    		JOptionPane.showMessageDialog(null, "Error al intentar abrir el archivo", "error", JOptionPane.ERROR_MESSAGE);
+    		return null;    	
+    	}
     }
       
 }
