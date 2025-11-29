@@ -1,5 +1,6 @@
 package presentation;
 import domain.Valley;
+
 import domain.ValleyException;
 import domain.Animal;
 import domain.Unit;
@@ -148,8 +149,8 @@ public class ValleyGUI extends JFrame{
     						File selectedFile = fileChooser.getSelectedFile();
     						try {
     							theValley.exportFile(selectedFile);
-    						}catch(ValleyException ve) {
-    							JOptionPane.showMessageDialog(ValleyGUI.this, ve.getMessage());
+    						}catch(IOException e1) {
+    							JOptionPane.showMessageDialog(ValleyGUI.this, e1.getMessage());
     						}
     					}
     				}

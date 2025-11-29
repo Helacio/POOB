@@ -23,8 +23,17 @@ public class Proof {
     @Test 
     public void shouldSave() throws ValleyException {
     	ValleyGUI gameToSave = new ValleyGUI();
-    	File testFile =  new File("textValley.txt");
+    	File testFile =  new File("textValley.dat");
     	gameToSave.getValley().save(testFile);
+    	assertTrue("File should be exists", testFile.exists());
+    	testFile.delete();
+    }
+    
+    @Test
+    public void shouldSave2() throws ValleyException {
+    	ValleyGUI gameToSave = new ValleyGUI();
+    	File testFile =  new File("textValley.txt");
+    	gameToSave.getValley().save2(testFile);
     	assertTrue("File should be exists", testFile.exists());
     	testFile.delete();
     }

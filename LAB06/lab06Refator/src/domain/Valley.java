@@ -1,4 +1,6 @@
 package domain;
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -12,7 +14,11 @@ import java.util.*;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
-/*No olviden adicionar la documentacion*/
+/*
+ * Valley is part's backend code, here make aperations to move in 
+ * ValleuGUI the units 
+ */
+
 public class Valley implements Serializable{
     static private int SIZE=25;
     private Unit[][] places;
@@ -120,17 +126,13 @@ public class Valley implements Serializable{
     public void save(File file) throws ValleyException{
     	if (file == null) throw new ValleyException(ValleyException.OPTION_SAVE + " Archivo: " + file.getName());
     	try {
-    		if (file != null) {
-    			FileWriter saving = new FileWriter(file);
-    			saving.write("SIZE: " + SIZE + "\n");
-    			
-    			for (int i = 0; i < places.length; i++) {
-    				for (int j = 0; j < places[i].length; j++) {
-    					saving.write("Unit " + "[" + i+ "]" +"[" + j+ "]" + ":"+ places[i][j].getClass().getSimpleName() + "\n");
-    				}
-    			}
-    			saving.close();
-    		}
+    		FileOutputStream fos = new FileOutputStream(file);
+    		BufferedOutputStream bos = new BufferedOutputStream(fos);
+    		ObjectOutputStream oos = new ObjectOutputStream(bos);
+    		
+    		oos.writeObject(this);
+    		oos.close();
+    		
     	} catch (IOException e) {
     		JOptionPane.showMessageDialog(null, "Error al intentar guardar el archivo.", "Error", JOptionPane.ERROR_MESSAGE);
     	}
@@ -140,11 +142,13 @@ public class Valley implements Serializable{
     /** Un segundo intento de save
      * 
      */
-    public void save2(File file) throws ValleyException{
-    	try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))){
+    public void save2(File file) {
+
+    	try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
     		out.writeObject(this);
-    	} catch(IOException e) {
-    		JOptionPane.showMessageDialog(null, "Error al intentar guardar el archivo.", "Error", JOptionPane.ERROR_MESSAGE);
+    		
+    	} catch (IOException e) {
+    		JOptionPane.showMessageDialog(null, "Error al intentar guardar el archivo.",  "Error", JOptionPane.ERROR_MESSAGE);
     	}
     }
     /**
@@ -201,9 +205,10 @@ public class Valley implements Serializable{
      * export a specific file
      * This method is in construction
      * @param file the name or path of the file
+     * @throws IOException 
      * @throws ValleyException if the method is called, tells you the export option is in construction
      */
-    public void exportFile(File file){
+    public void exportFile(File file) throws IOException{
     	try(BufferedWriter writer = new BufferedWriter(new FileWriter(file))){
     		for(int i = 0; 0 < SIZE; i++) {
     			for(int j = 0; j < SIZE; j++) {
