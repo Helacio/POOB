@@ -5,6 +5,8 @@ import domain.Animal;
 import domain.Unit;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -103,7 +105,7 @@ public class ValleyGUI extends JFrame{
     				}
     			}
     		);
-    	
+    	/** Primera version
     	menuItemSave.addActionListener(
     			new ActionListener() {
     				public void actionPerformed(ActionEvent e) {
@@ -120,7 +122,7 @@ public class ValleyGUI extends JFrame{
     				}
     			}
     		);
-    	
+    	*/
     	menuItemImport.addActionListener(
     			new ActionListener() {
     				public void actionPerformed(ActionEvent e) {
@@ -167,6 +169,25 @@ public class ValleyGUI extends JFrame{
     				}
     			}
     		);
+    	menuItemSave.addActionListener(
+    			new ActionListener() {
+    				public void actionPerformed(ActionEvent e) {
+    					JFileChooser fileChooser = new JFileChooser();
+    					fileChooser.setFileFilter(new FileNameExtensionFilter("DAT files", "dat"));
+    					int result = fileChooser.showSaveDialog(ValleyGUI.this);
+    					if (result == JFileChooser.APPROVE_OPTION) {
+    						File selectedFile = fileChooser.getSelectedFile();
+    						if(!selectedFile.getName().endsWith(".dat")) {
+    							selectedFile = new File(selectedFile.getAbsolutePath() + ".dat");
+    						}
+    						try {
+								theValley.save2(selectedFile);
+							} catch (ValleyException e1) {
+								JOptionPane.showMessageDialog(ValleyGUI.this, e1.getMessage());
+							}
+    					}
+    				}
+    			});
     }
     
     private void optionExit() {

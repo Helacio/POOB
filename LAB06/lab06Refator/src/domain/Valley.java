@@ -1,10 +1,13 @@
 package domain;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.*;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 /*No olviden adicionar la documentacion*/
@@ -127,10 +130,21 @@ public class Valley implements Serializable{
     			saving.close();
     		}
     	} catch (IOException e) {
-    		e.printStackTrace();
+    		JOptionPane.showMessageDialog(null, "Error al intentar guardar el archivo.", "Error", JOptionPane.ERROR_MESSAGE);
     	}
     }
     
+    
+    /** Un segundo intento de save
+     * 
+     */
+    public void save2(File file) throws ValleyException{
+    	try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))){
+    		out.writeObject(this);
+    	} catch(IOException e) {
+    		JOptionPane.showMessageDialog(null, "Error al intentar guardar el archivo.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+    }
     /**
      * Opens a specific file
      * This method is in construction
@@ -170,4 +184,5 @@ public class Valley implements Serializable{
     public void exportFile(File file) throws ValleyException{
     	throw new ValleyException(ValleyException.OPTION_EXPORT + " Archivo: " + file.getName());
     }
+      
 }
