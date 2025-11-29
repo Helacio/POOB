@@ -23,7 +23,7 @@ public class ValleyGUI extends JFrame{
     menuItemExit, menuItemImport, menuItemExport;
    
     
-    private ValleyGUI() {
+    public ValleyGUI() {
         theValley=new Valley();
         SIZE=theValley.getSize();
         prepareElements();
@@ -68,6 +68,11 @@ public class ValleyGUI extends JFrame{
 		
 		menuBar.add(menuFiles);
 		setJMenuBar(menuBar);
+    }
+    
+    
+    public Valley getValley() {
+    	return theValley;
     }
     
     /**
@@ -240,4 +245,5 @@ class PhotoValley extends JPanel{
             }
         }
     }
+    
 }

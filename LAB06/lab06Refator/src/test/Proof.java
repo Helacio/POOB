@@ -1,13 +1,15 @@
-package tests;
+package test;
+import presentation.*;
+import domain.*;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.Serializable;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 /**
  * The test class Test.
@@ -19,10 +21,10 @@ public class Proof {
     
     
     @Test 
-    public void shouldSave() {
+    public void shouldSave() throws ValleyException {
     	ValleyGUI gameToSave = new ValleyGUI();
     	File testFile =  new File("textValley.txt");
-    	gameToSave.theValley.save(testFile);
+    	gameToSave.getValley().save(testFile);
     	assertTrue("File should be exists", testFile.exists());
     	testFile.delete();
     }
