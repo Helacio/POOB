@@ -173,6 +173,26 @@ public class Valley implements Serializable{
      * @param file the name or path of the file
      * @throws ValleyException if the method is called, tells you the import option is in construction
      */
+    public Valley importFile00(File file) throws ValleyException{
+    	throw new ValleyException(ValleyException.OPTION_IMPORT + " Archivo: " + file.getName());
+    }
+    
+    /**
+     * export a specific file
+     * This method is in construction
+     * @param file the name or path of the file
+     * @throws ValleyException if the method is called, tells you the export option is in construction
+     */
+    public void exportFile00(File file) throws ValleyException{
+    	throw new ValleyException(ValleyException.OPTION_EXPORT + " Archivo: " + file.getName());
+    }
+    
+    /**
+     * import a specific file
+     * This method is in construction
+     * @param file the name or path of the file
+     * @throws ValleyException if the method is called, tells you the import option is in construction
+     */
     public Valley importFile(File file) throws ValleyException{
     	throw new ValleyException(ValleyException.OPTION_IMPORT + " Archivo: " + file.getName());
     }
@@ -183,8 +203,13 @@ public class Valley implements Serializable{
      * @param file the name or path of the file
      * @throws ValleyException if the method is called, tells you the export option is in construction
      */
-    public void exportFile(File file) throws ValleyException{
-    	throw new ValleyException(ValleyException.OPTION_EXPORT + " Archivo: " + file.getName());
+    public void exportFile(File file){
+    	try(BufferedWriter writer = new BufferedWriter(new FileWriter(file))){
+    		for(int i = 0; 0 < SIZE; i++) {
+    			for(int j = 0; j < SIZE; j++) {
+    			}//Pendiente, no se que más hacer.
+    		}
+    	}
     }
     
     public Valley open(File file) throws ClassNotFoundException {
