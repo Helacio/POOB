@@ -1,0 +1,15 @@
+=======ValleyGameDomain========
+Objects in cells: coordenade i, coordenade j
+Wolf:     3:     3
+Wolf:     2:     2
+Wolf:     1:     1
+Wolf:     17:     3
+Wolf:     18:     2
+Wolf:     19:     1
+Hay:     20:     20
+Hay:     21:     21
+Hay:     22:     22
+Hay:     3:     20
+Hay:     2:     21
+Hay:     1:     22
+Size board: 25 X 25

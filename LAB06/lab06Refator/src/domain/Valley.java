@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -58,9 +59,9 @@ public class Valley implements Serializable{
     	//Cells
     	
         Wolf akela = new Wolf(this, 10, 10);
-        //Wolf larka = new Wolf(this, 15, 15);
+        Wolf larka = new Wolf(this, 15, 15);
         setUnit(10, 10, akela);
-        //setUnit(15, 15, larka);
+        setUnit(15, 15, larka);
         
         //Add some hays
         Hay hay1 = new Hay();
@@ -142,7 +143,7 @@ public class Valley implements Serializable{
      * @param file the name or path of the file
      * @throws ValleyException if the method is called, tells you the save option is in construction
      */
-    public void save(File file) throws ValleyException{
+    public void save01(File file) throws ValleyException{
     	if (file == null) throw new ValleyException(ValleyException.OPTION_SAVE + " Archivo: " + file.getName());
     	try {
     		FileOutputStream fos = new FileOutputStream(file);
@@ -220,7 +221,7 @@ public class Valley implements Serializable{
      * @param file the name or path of the file
      * @throws ValleyException if the method is called, tells you the import option is in construction
      */
-    public Valley importFile(File file) throws ValleyException{
+    public Valley importFile01(File file) throws ValleyException{
     	if (file == null) throw new ValleyException(ValleyException.OPTION_IMPORT + " Archivo: " + file.getName());
 		Valley valley = new Valley();
     	
@@ -262,7 +263,7 @@ public class Valley implements Serializable{
      * @throws IOException 
      * @throws ValleyException if the method is called, tells you the export option is in construction
      */
-    public void exportFile(File file) throws IOException, ValleyException{
+    public void exportFile01(File file) throws IOException, ValleyException{
     	
     	if (file == null) {
     		throw new ValleyException(ValleyException.OPTION_EXPORT + "File: null path provided");
@@ -286,7 +287,13 @@ public class Valley implements Serializable{
     	} 
     }
     
-    public Valley open(File file) throws ClassNotFoundException {
+    /**
+     * Opens a specific file
+     * This method is in construction
+     * @param file the name or path of the file
+     * @throws ValleyException if the method is called, tells you the open option is in construction
+     */
+    public Valley open01(File file) throws ClassNotFoundException {
     	try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
     		return (Valley) in.readObject();
     	} catch (IOException e){
@@ -294,5 +301,134 @@ public class Valley implements Serializable{
     		return null;    	
     	}
     }
+    
+    /**
+     * Opens a specific file
+     * This method is in construction
+     * @param file the name or path of the file
+     * @throws ValleyException if the method is called, tells you the open option is in construction
+     */
+    public Valley open(File file) throws ClassNotFoundException {
+    	try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
+    		return (Valley) in.readObject();
+    	} catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "No se encontró el archivo especificado. Verifique la ruta.", "Error al abrir", JOptionPane.ERROR_MESSAGE);
+        } catch (ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "No se logró encontrar la clase correspondiente al objeto en el archivo.", "Error de clase", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException e){
+    		JOptionPane.showMessageDialog(null, "Error al intentar abrir el archivo", "error", JOptionPane.ERROR_MESSAGE);
+        } catch (SecurityException e) {
+            JOptionPane.showMessageDialog(null, "Permiso denegado para acceder al archivo especificado.", "Error de seguridad", JOptionPane.ERROR_MESSAGE);
+        } 
+    	return null;  
+    }
       
+    /**
+     * Saves a specific file
+     * This method is in construction
+     * @param file the name or path of the file
+     * @throws ValleyException if the method is called, tells you the save option is in construction
+     */
+    public void save(File file) throws ValleyException{
+    	if (file == null) throw new ValleyException(ValleyException.OPTION_SAVE + " Archivo: " + file.getName());
+    	try {
+    		FileOutputStream fos = new FileOutputStream(file);
+    		BufferedOutputStream bos = new BufferedOutputStream(fos);
+    		ObjectOutputStream oos = new ObjectOutputStream(bos);
+    		
+    		oos.writeObject(this);
+    		oos.close();
+    		
+    	}catch (FileNotFoundException e) {
+    		JOptionPane.showMessageDialog(null, "No se pudo encontrar el archivo especificado. Verifique la ruta.", "Error al guardar", JOptionPane.ERROR_MESSAGE);
+    	} catch (IOException e) {
+    	    JOptionPane.showMessageDialog(null, "Error al guardar el archivo.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}catch (SecurityException e) {
+    	    JOptionPane.showMessageDialog(null, "Permiso denegado para acceder al archivo especificado.", "Error", JOptionPane.ERROR_MESSAGE);
+    	} 
+    }
+    
+    /**
+     * import a specific file
+     * This method is in construction
+     * @param file the name or path of the file
+     * @throws ValleyException if the method is called, tells you the import option is in construction
+     */
+    public Valley importFile(File file) throws ValleyException{
+    	if (file == null) throw new ValleyException(ValleyException.OPTION_IMPORT + " Archivo: " + file.getName());
+		Valley valley = new Valley();
+    	
+    	try (FileReader fr = new FileReader(file);
+    		BufferedReader br = new BufferedReader(fr)) {
+    		String linea;
+    		br.readLine();
+    		br.readLine();
+    		while ((linea = br.readLine()) != null) {
+    			linea = linea.trim();
+    			
+    			if (linea.startsWith("Size board:")) break;
+    			
+    			String[] partes = linea.trim().split(":");
+    			if(partes.length >= 3) {
+    				String tipo = partes[0].trim();
+                    int row = Integer.parseInt(partes[1].trim());
+                    int col = Integer.parseInt(partes[2].trim());
+                    
+                    if (tipo.equals("Wolf")) {
+                        Wolf toPut = new Wolf(valley, col, row);
+                        places[row][col] = toPut;
+                    } else if (tipo.equals("Hay")) {
+                        Hay toPut = new Hay(valley, row, col);
+                        places[row][col] = toPut;
+                    }
+    			}
+    		}
+    	} catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "No se encontró el archivo especificado. Verifique la ruta.", "Error al importar", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo de importación: " + e.getMessage(), "Error al importar", JOptionPane.ERROR_MESSAGE);
+        } catch (SecurityException e) {
+            JOptionPane.showMessageDialog(null, "Permiso denegado para acceder al archivo especificado.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ArrayIndexOutOfBoundsException e){
+            JOptionPane.showMessageDialog(null, "Error al intentar agregar células en donde hay posiciones invalidas.", "Error de límite", JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error en el formato de los números en el archivo de importación. Asegúrese de que las coordenadas sean válidas.", "Error al importar", JOptionPane.ERROR_MESSAGE);
+        }
+    	return valley;
+    }
+    
+    /**
+     * export a specific file
+     * This method is in construction
+     * @param file the name or path of the file
+     * @throws IOException 
+     * @throws ValleyException if the method is called, tells you the export option is in construction
+     */
+    public void exportFile(File file) throws IOException, ValleyException{
+    	
+    	if (file == null) {
+    		throw new ValleyException(ValleyException.OPTION_EXPORT + "File: null path provided");
+    	}
+    	
+    	try(FileWriter fileToWrite = new FileWriter(file);
+    			BufferedWriter writer = new BufferedWriter(fileToWrite)){
+    	
+    		writer.write("=======ValleyGameDomain========\n");
+    		writer.write("Objects in cells: coordenade i, coordenade j\n");
+    		for(int i = 0; i < SIZE; i++) {
+    			for(int j = 0; j < SIZE; j++) {
+    				if (places[i][j] != null) {
+    					writer.write(places[i][j].getClass().getSimpleName()  + ":" + "     " + i  + ":" + "     "+ j + "\n");
+    				}
+    			}
+    		}
+    		writer.write("Size board: " + SIZE + " X " + SIZE);
+    	} catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "No se pudo encontrar el archivo especificado. Verifique la ruta.", "Error al exportar", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al exportar el archivo. Asegúrese de tener permisos de escritura.", "Error al exportar", JOptionPane.ERROR_MESSAGE);
+        } catch (SecurityException e) {
+            JOptionPane.showMessageDialog(null, "Permiso denegado para acceder al archivo especificado.", "Error de seguridad", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }
