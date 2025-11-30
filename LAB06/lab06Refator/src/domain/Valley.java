@@ -55,10 +55,26 @@ public class Valley implements Serializable{
     }
 
     public void someUnits(){   
+    	//Cells
+    	
         Wolf akela = new Wolf(this, 10, 10);
-        Wolf larka = new Wolf(this, 15, 15);
+        //Wolf larka = new Wolf(this, 15, 15);
         setUnit(10, 10, akela);
-        setUnit(15, 15, larka);
+        //setUnit(15, 15, larka);
+        
+        //Add some hays
+        Hay hay1 = new Hay();
+        setUnit(20,20, hay1);
+        
+        //Wolf marie = new Wolf(this, 12,7);
+        //Wolf rob = new Wolf(this,13, 9);
+        Hay hay2 = new Hay();
+        Hay hay3 = new Hay();
+        setUnit(21,21, hay2);
+        setUnit(21,24, hay3);
+        //setUnit(12, 7, marie);
+        //setUnit(13,9, rob);
+        
     }
     
     public int neighborsEquals(int r, int c){
@@ -214,12 +230,23 @@ public class Valley implements Serializable{
     		br.readLine();
     		br.readLine();
     		while ((linea = br.readLine()) != null) {
+    			linea = linea.trim();
+    			
+    			if (linea.startsWith("Size board:")) break;
+    			
     			String[] partes = linea.trim().split(":");
-    			if (partes[0] == "Wolf") {
-    				int row = Integer.parseInt(partes[1]);
-    				int col = Integer.parseInt(partes[2]);
-    				Wolf toPut = new Wolf(valley, col, row);
-    				places[row][col] = toPut;
+    			if(partes.length >= 3) {
+    				String tipo = partes[0].trim();
+                    int row = Integer.parseInt(partes[1].trim());
+                    int col = Integer.parseInt(partes[2].trim());
+                    
+                    if (tipo.equals("Wolf")) {
+                        Wolf toPut = new Wolf(valley, col, row);
+                        places[row][col] = toPut;
+                    } else if (tipo.equals("Hay")) {
+                        Hay toPut = new Hay(valley, row, col);
+                        places[row][col] = toPut;
+                    }
     			}
     		}
     	} catch (IOException e) {
@@ -249,7 +276,7 @@ public class Valley implements Serializable{
     		for(int i = 0; i < SIZE; i++) {
     			for(int j = 0; j < SIZE; j++) {
     				if (places[i][j] != null) {
-    					writer.write(places[i][j].getClass().getName() + ": "  + "     " + i + ": " + "     "+ j + "\n");
+    					writer.write(places[i][j].getClass().getSimpleName()  + ":" + "     " + i  + ":" + "     "+ j + "\n");
     				}
     			}
     		}

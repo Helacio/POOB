@@ -133,6 +133,7 @@ public class ValleyGUI extends JFrame{
     						File selectedFile = fileChooser.getSelectedFile();
     						try {
     							theValley.importFile(selectedFile);
+    							photo.repaint();
     						} catch(ValleyException ve) {
     							JOptionPane.showMessageDialog(ValleyGUI.this, ve.getMessage());
     						}
